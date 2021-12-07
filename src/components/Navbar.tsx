@@ -1,8 +1,9 @@
 import { AppBar, Box, Toolbar, Typography, MenuItem, Select, FormControl, Chip } from '@material-ui/core'
-import {useState, ChangeEvent, useEffect} from 'react'
+import {useState, ChangeEvent, useEffect, useContext} from 'react'
 import WelcomeMessage from './WelcomeMessage'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
-import { setInterval } from 'timers'
+import { ProgressContext } from '../contexts/ProgressContext'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -13,10 +14,17 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 }))
 
 const Navbar = () => {
+    
     // styles 
+    
     const classes = useStyles();
 
+    // context
+
+    const { lastTime, status } = useContext(ProgressContext)
+    const { theme } = useContext(ThemeContext)
     // state
+
     const [position, setPosition] = useState<string>('Full-Stack Developer')
 
     const [time, setTime] = useState<Date>(() => new Date(Date.now()))
@@ -27,18 +35,18 @@ const Navbar = () => {
 
     // Effect
 
-    useEffect(() => {
+    useEffect(() => { 
         const timer = setInterval(() => setTime(new Date(Date.now())), 1000);
         return () => clearInterval(timer)
     }, [])
     return (
-       <AppBar position='static' color='primary'>
+       <AppBar position='static' color={theme}>
            <Toolbar>
                <Box display='flex' justifyContent='space-between' alignItems='center' width={1} py={2}>
                     <Typography variant='h6'>My movies</Typography>
                     <Box textAlign='center'>
                         <WelcomeMessage position={position} country='America'/>
-                        <Chip label={`Last time working on this project: 04/12/2021 - Status: In Progress`}></Chip>
+                        <Chip label={`Last time working on this project: ${lastTime} - Status: ${status}`}></Chip>
                         <Box mt={1}>
                             <FormControl>
                                 <Select value={position} onChange={onPositionChange} className={classes.positionSelect} >
