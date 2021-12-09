@@ -1,9 +1,11 @@
-import { AppBar, Box, Toolbar, Typography, MenuItem, Select, FormControl, Chip } from '@material-ui/core'
+import { AppBar, Box, Toolbar, Typography, MenuItem, Select, FormControl, Chip, Button } from '@material-ui/core'
 import {useState, ChangeEvent, useEffect, useContext} from 'react'
 import WelcomeMessage from './WelcomeMessage'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import { ProgressContext } from '../contexts/ProgressContext'
 import { ThemeContext } from '../contexts/ThemeContext'
+import Login from './Login'
+import { AuthContext } from '../contexts/AuthContext'
 
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -23,11 +25,14 @@ const Navbar = () => {
 
     const { lastTime, status } = useContext(ProgressContext)
     const { theme } = useContext(ThemeContext)
+    const { authInfo: { isAuthenticated }, toggleAuth } = useContext(AuthContext)
     // state
 
     const [position, setPosition] = useState<string>('Full-Stack Developer')
 
     const [time, setTime] = useState<Date>(() => new Date(Date.now()))
+    const [loginOpen, setLoginOpen] = useState(false)
+
     const onPositionChange = (event: ChangeEvent<{
         value: unknown;
     }>
@@ -61,7 +66,14 @@ const Navbar = () => {
                         <Box my={1}>
                             <Typography variant='h6'>{time.toUTCString()}</Typography>
                         </Box>
+                        <Button 
+                            variant='contained' 
+                            onClick={isAuthenticated ? toggleAuth.bind(this, '') : setLoginOpen.bind(this, true)}
+                        >
+                            {isAuthenticated ? 'Logout' : 'Login'}
+                        </Button>
                     </Box>
+                    <Login isOpen={loginOpen} handleClose={setLoginOpen} />
                </Box>
            </Toolbar>
        </AppBar>

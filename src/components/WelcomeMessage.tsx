@@ -1,5 +1,6 @@
 import { Box } from '@material-ui/core'
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '../contexts/AuthContext'
 
 interface WelcomeMessageProps {
     position: string
@@ -7,9 +8,13 @@ interface WelcomeMessageProps {
 }
 
 const WelcomeMessage = ({position, country = 'Viet Nam'}: WelcomeMessageProps) => {
+    
+    //context
+    const { authInfo: { username }} = useContext(AuthContext)
+
     return (
        <Box mb={1}>
-           Welcome {position} from {country}
+           Welcome { username } - {position} from {country}
        </Box>
     )
 }
