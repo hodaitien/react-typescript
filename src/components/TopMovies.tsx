@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import { Box, Card, CardContent, CardHeader, Checkbox, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
+import { TopMovieContext } from '../contexts/TopMovieContext'
 
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -19,6 +20,14 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 const TopMovies = () => {
     const classes = useStyles()
+
+    // context
+    const { topMovies, getTopMovies, toggleWatched } = useContext(TopMovieContext)
+
+    useEffect(() => {
+        getTopMovies()
+    }, [])
+
     return (
         <Box mt={1} ml={2}>
             <Card raised>
@@ -29,12 +38,14 @@ const TopMovies = () => {
                 />
                 <CardContent className={classes.topMoviesList}>
                     <List>
-                        <ListItem button className={classes.topMovieItem}>
+                        {topMovies.map(movie => (
+                        <ListItem key={movie.imdbID} button className={classes.topMovieItem}>
                             <ListItemIcon>
-                                <Checkbox />
+                                <Checkbox checked={movie.Watched} onClick={toggleWatched.bind(this, movie.imdbID)} />
                             </ListItemIcon>
-                            <ListItemText primary='ten bo phim vao day' />
+                            <ListItemText primary={movie.Title} />
                         </ListItem>
+                        ))}
                     </List>
                 </CardContent>
             </Card>

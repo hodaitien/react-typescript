@@ -9,28 +9,31 @@ import AuthContextProvider from './contexts/AuthContext';
 import MovieContextProvider from './contexts/MovieContext';
 import ProgressContextProvider from './contexts/ProgressContext';
 import ThemeContextProvider from './contexts/ThemeContext';
+import TopMovieContextProvider from './contexts/TopMovieContext';
 
 function App() {
   return (
     <div>
-      <AuthContextProvider>
-        <MovieContextProvider>
-          <ThemeContextProvider>
-            <ProgressContextProvider>
-              <Navbar />
-              <Grid container>
-                  <Grid item xs={4}>
-                    <TopMovies />
-                  </Grid>
-                  <Grid item xs={8}>
-                    <Movies />
-                  </Grid>
-              </Grid>
-              <ToggleThemeBtn />
-            </ProgressContextProvider>
-          </ThemeContextProvider>
-        </MovieContextProvider>
-      </AuthContextProvider>
+      <TopMovieContextProvider>
+        <AuthContextProvider>
+          <MovieContextProvider>
+            <ThemeContextProvider>
+              <ProgressContextProvider>
+                <Navbar />
+                <Grid container>
+                    <Grid item xs={4}>
+                      <TopMovies />
+                    </Grid>
+                    <Grid item xs={8}>
+                      <Movies />
+                    </Grid>
+                </Grid>
+                <ToggleThemeBtn />
+              </ProgressContextProvider>
+            </ThemeContextProvider>
+          </MovieContextProvider>
+        </AuthContextProvider>
+      </TopMovieContextProvider>
     </div>
   );
 }
